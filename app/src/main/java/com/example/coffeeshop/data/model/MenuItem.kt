@@ -10,3 +10,11 @@ data class MenuItem(
     val price: Double,
     val imageResId: Int
 )
+
+data class CartItem(
+    val menuItem: MenuItem,
+    var quantity: Int = 1
+) {
+    val totalPrice: Double
+        get() = menuItem.price * quantity
+}
