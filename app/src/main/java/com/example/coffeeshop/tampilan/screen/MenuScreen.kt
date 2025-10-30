@@ -24,7 +24,7 @@ fun MenuScreen(
         topBar = {
             TopAppBar(
                 title = { Text(
-                    text = "Menu Kopi Senja",
+                    text = "Menu Kedai Ngopi Kalcer",
                     fontWeight = FontWeight.Bold,
                     color = BrownPrimary
                 ) },

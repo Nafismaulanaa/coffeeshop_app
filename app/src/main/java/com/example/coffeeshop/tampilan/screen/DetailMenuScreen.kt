@@ -31,12 +31,12 @@ fun DetailMenuScreen(
     onBack: () -> Unit = {}
 ) {
     var quantity by remember { mutableStateOf(1) }
+    val totalPrice = menuItem.price * quantity
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
@@ -60,7 +60,7 @@ fun DetailMenuScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1f) // Ambil semua ruang yang tersedia
                     .verticalScroll(rememberScrollState())
             ) {
                 Spacer(Modifier.height(24.dp))
@@ -99,7 +99,7 @@ fun DetailMenuScreen(
                                 fontWeight = FontWeight.Medium
                             )
                             Text(
-                                text = "Rp ${menuItem.price.toInt()}",
+                                text = "Rp ${totalPrice.toInt()}",
                                 color = MaterialTheme.colorScheme.primary,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.SemiBold
