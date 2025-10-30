@@ -211,24 +211,22 @@ fun CartItemCard(
                         .padding(end = 12.dp)
                 )
 
+                // --- PERBAIKAN ---
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = cartItem.menuItem.name,
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp
                     )
+                    // Harga sekarang menampilkan total harga untuk item ini (kuantitas * harga)
                     Text(
-                        text = "Rp ${cartItem.menuItem.price.toInt()}",
-                        color = MaterialTheme.colorScheme.primary,
-                        fontSize = 14.sp
-                    )
-                    Text(
-                        text = "Subtotal: Rp ${cartItem.totalPrice.toInt()}",
+                        text = "Rp ${cartItem.totalPrice.toInt()}",
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.secondary
+                        fontSize = 15.sp, // Ukuran disesuaikan agar menonjol
+                        color = MaterialTheme.colorScheme.primary // Warna primer agar konsisten
                     )
                 }
+                // --- AKHIR PERBAIKAN ---
 
                 Column(horizontalAlignment = Alignment.End) {
                     IconButton(onClick = { showDeleteDialog = true }) {
@@ -243,6 +241,7 @@ fun CartItemCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            // Kontrol kuantitas (sudah benar)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
@@ -280,5 +279,3 @@ fun CartItemCard(
         }
     }
 }
-
-
