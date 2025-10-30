@@ -5,11 +5,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.coffeeshop.data.model.CartItem
+import com.example.coffeeshop.ui.theme.BrownPrimary
 import com.example.coffeeshop.viewmodel.CartViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,14 +38,10 @@ fun CartScreen(cartViewModel: CartViewModel = viewModel()) {
                         cartViewModel.clearCart()
                         showDialog = false
                     }
-                ) {
-                    Text("Ya")
-                }
+                ) { Text("Ya") }
             },
             dismissButton = {
-                TextButton(onClick = { showDialog = false }) {
-                    Text("Tidak")
-                }
+                TextButton(onClick = { showDialog = false }) { Text("Tidak") }
             }
         )
     }
@@ -53,12 +50,14 @@ fun CartScreen(cartViewModel: CartViewModel = viewModel()) {
         topBar = {
             TopAppBar(
                 title = {
-                    Column {
-                        Text("Keranjang Kamu")
-                    }
+                    Text(
+                        "Keranjang Kamu",
+                        fontWeight = FontWeight.Bold,
+                        color = BrownPrimary
+                    )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = MaterialTheme.colorScheme.surface,
                 ),
                 actions = {
                     if (cartItems.isNotEmpty()) {
@@ -68,54 +67,9 @@ fun CartScreen(cartViewModel: CartViewModel = viewModel()) {
                     }
                 }
             )
-        }
-    ) { innerPadding ->
-        if (cartItems.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = "🛒",
-                        fontSize = 64.sp
-                    )
-                    Spacer(Modifier.height(16.dp))
-                    Text(
-                        text = "Keranjang masih kosong",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Text(
-                        text = "Yuk, tambahkan menu favoritmu!",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-            ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp)
-                ) {
-                    items(cartItems, key = { it.menuItem.id }) { cartItem ->
-                        CartItemCard(
-                            cartItem = cartItem,
-                            onRemove = { cartViewModel.removeItem(cartItem) },
-                            onQuantityChange = { newQuantity ->
-                                cartViewModel.updateQuantity(cartItem, newQuantity)
-                            }
-                        )
-                    }
-                }
-
+        },
+        bottomBar = {
+            if (cartItems.isNotEmpty()) {
                 Surface(
                     tonalElevation = 8.dp,
                     modifier = Modifier.fillMaxWidth()
@@ -127,19 +81,14 @@ fun CartScreen(cartViewModel: CartViewModel = viewModel()) {
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text(
-                                text = "Total Item:",
-                                fontSize = 16.sp
-                            )
+                            Text(text = "Total Item:", fontSize = 16.sp)
                             Text(
                                 text = "${cartViewModel.getTotalItems()} item",
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Medium
                             )
                         }
-
                         Spacer(Modifier.height(8.dp))
-
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
@@ -157,11 +106,9 @@ fun CartScreen(cartViewModel: CartViewModel = viewModel()) {
                                 color = MaterialTheme.colorScheme.primary
                             )
                         }
-
                         Spacer(Modifier.height(20.dp))
-
                         Button(
-                            onClick = {  },
+                            onClick = { /* TODO: Implementasi logika pesan */ },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(50.dp)
@@ -169,6 +116,47 @@ fun CartScreen(cartViewModel: CartViewModel = viewModel()) {
                             Text("Pesan Sekarang!", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                         }
                     }
+                }
+            }
+        }
+    ) { innerPadding ->
+        if (cartItems.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "Keranjang masih kosong",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Text(
+                        text = "Yuk, tambahkan menu favoritmu!",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(horizontal = 8.dp)
+            ) {
+                items(cartItems, key = { it.menuItem.id }) { cartItem ->
+                    CartItemCard(
+                        cartItem = cartItem,
+                        onRemove = { cartViewModel.removeItem(cartItem) },
+                        onQuantityChange = { newQuantity ->
+                            cartViewModel.updateQuantity(cartItem, newQuantity)
+                        }
+                    )
+                }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }
@@ -189,19 +177,13 @@ fun CartItemCard(
             title = { Text("Hapus Item") },
             text = { Text("Hapus ${cartItem.menuItem.name} dari keranjang?") },
             confirmButton = {
-                TextButton(
-                    onClick = {
-                        onRemove()
-                        showDeleteDialog = false
-                    }
-                ) {
-                    Text("Hapus")
-                }
+                TextButton(onClick = {
+                    onRemove()
+                    showDeleteDialog = false
+                }) { Text("Hapus") }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Batal")
-                }
+                TextButton(onClick = { showDeleteDialog = false }) { Text("Batal") }
             }
         )
     }
@@ -219,7 +201,7 @@ fun CartItemCard(
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Top
             ) {
                 Image(
                     painter = painterResource(id = cartItem.menuItem.imageResId),
@@ -248,51 +230,55 @@ fun CartItemCard(
                     )
                 }
 
-                IconButton(onClick = { showDeleteDialog = true }) {
-                    Icon(
-                        Icons.Default.Delete,
-                        contentDescription = "Hapus",
-                        tint = MaterialTheme.colorScheme.error
-                    )
+                Column(horizontalAlignment = Alignment.End) {
+                    IconButton(onClick = { showDeleteDialog = true }) {
+                        Icon(
+                            Icons.Default.Delete,
+                            contentDescription = "Hapus",
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                    }
                 }
             }
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(
+                OutlinedButton(
                     onClick = {
                         if (cartItem.quantity > 1) {
                             onQuantityChange(cartItem.quantity - 1)
+                        } else {
+                            showDeleteDialog = true
                         }
                     },
-                    enabled = cartItem.quantity > 1
+                    modifier = Modifier.size(32.dp),
+                    contentPadding = PaddingValues(0.dp)
                 ) {
-                    Icon(Icons.Default.Remove, contentDescription = "Kurangi")
+                    Text("-", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
 
-                Surface(
-                    color = MaterialTheme.colorScheme.secondaryContainer,
-                    shape = MaterialTheme.shapes.small
-                ) {
-                    Text(
-                        text = cartItem.quantity.toString(),
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
-                    )
-                }
+                Text(
+                    text = "${cartItem.quantity}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(horizontal = 12.dp)
+                )
 
-                IconButton(
-                    onClick = { onQuantityChange(cartItem.quantity + 1) }
+                OutlinedButton(
+                    onClick = { onQuantityChange(cartItem.quantity + 1) },
+                    modifier = Modifier.size(32.dp),
+                    contentPadding = PaddingValues(0.dp)
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = "Tambah")
+                    Text("+", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
     }
 }
+
+

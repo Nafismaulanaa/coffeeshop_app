@@ -6,3 +6,5 @@ val BrownPrimary = Color(0xFF6F4E37)
 val BrownDark = Color(0xFF4B382A)
 val CreamLight = Color(0xFFFFFFFF)
 val CoffeeAccent = Color(0xFFDAB88B)
+
+val Dark = Color(0x00000000)

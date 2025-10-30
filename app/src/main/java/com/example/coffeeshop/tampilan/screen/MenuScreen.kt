@@ -6,10 +6,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.coffeeshop.data.model.MenuItem
 import com.example.coffeeshop.data.repository.MenuRepository
 import com.example.coffeeshop.tampilan.components.MenuItemCard
+import com.example.coffeeshop.ui.theme.BrownPrimary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -21,9 +23,14 @@ fun MenuScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Menu Kopi Senja") },
+                title = { Text(
+                    text = "Menu Kopi Senja",
+                    fontWeight = FontWeight.Bold,
+                    color = BrownPrimary
+                ) },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
             )
         }

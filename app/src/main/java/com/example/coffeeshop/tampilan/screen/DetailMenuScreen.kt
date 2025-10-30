@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.coffeeshop.data.model.MenuItem
+import com.example.coffeeshop.ui.theme.BrownPrimary
 import com.example.coffeeshop.viewmodel.CartViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,7 +34,9 @@ fun DetailMenuScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(menuItem.name) },
+                title = { Text(menuItem.name,
+                    fontWeight = FontWeight.Bold,
+                    color = BrownPrimary) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -43,7 +46,8 @@ fun DetailMenuScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
             )
         }
