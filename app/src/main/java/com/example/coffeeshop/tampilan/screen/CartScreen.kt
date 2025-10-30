@@ -55,12 +55,6 @@ fun CartScreen(cartViewModel: CartViewModel = viewModel()) {
                 title = {
                     Column {
                         Text("Keranjang Kamu")
-                        if (cartItems.isNotEmpty()) {
-                            Text(
-                                text = "${cartViewModel.getTotalItems()} item",
-                                style = MaterialTheme.typography.bodySmall
-                            )
-                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -164,7 +158,7 @@ fun CartScreen(cartViewModel: CartViewModel = viewModel()) {
                             )
                         }
 
-                        Spacer(Modifier.height(12.dp))
+                        Spacer(Modifier.height(20.dp))
 
                         Button(
                             onClick = {  },

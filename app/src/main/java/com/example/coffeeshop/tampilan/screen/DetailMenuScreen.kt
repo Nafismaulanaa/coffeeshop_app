@@ -54,6 +54,8 @@ fun DetailMenuScreen(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
         ) {
+            Spacer(Modifier.height(24.dp))
+
             Image(
                 painter = painterResource(id = menuItem.imageResId),
                 contentDescription = menuItem.name,
@@ -61,6 +63,8 @@ fun DetailMenuScreen(
                     .fillMaxWidth()
                     .height(250.dp)
             )
+
+            Spacer(Modifier.height(40.dp))
 
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -82,8 +86,6 @@ fun DetailMenuScreen(
                 )
 
                 Spacer(Modifier.height(24.dp))
-
-                // Quantity Selector
                 Text(
                     text = "Jumlah:",
                     fontSize = 16.sp,
@@ -95,7 +97,6 @@ fun DetailMenuScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    // Tombol Minus
                     FilledIconButton(
                         onClick = { if (quantity > 1) quantity-- },
                         enabled = quantity > 1,
@@ -109,7 +110,6 @@ fun DetailMenuScreen(
                         )
                     }
 
-                    // Display Quantity
                     Surface(
                         color = MaterialTheme.colorScheme.secondaryContainer,
                         shape = MaterialTheme.shapes.small,
@@ -124,7 +124,6 @@ fun DetailMenuScreen(
                         )
                     }
 
-                    // Tombol Plus
                     FilledIconButton(
                         onClick = { quantity++ },
                         shape = CircleShape,
@@ -140,7 +139,6 @@ fun DetailMenuScreen(
 
                 Spacer(Modifier.height(16.dp))
 
-                // Total Harga
                 Text(
                     text = "Total: Rp ${(menuItem.price * quantity).toInt()}",
                     fontSize = 20.sp,
